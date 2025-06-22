@@ -1,0 +1,52 @@
+{
+  "apis": {
+    "v2": {
+      "spec": "https://dac-static.atlassian.com/cloud/confluence/openapi-v2.v3.json",
+      "baseUrl": "/wiki/api/v2"
+    },
+    "v1": {
+      "spec": "https://dac-static.atlassian.com/cloud/confluence/swagger.v3.json",
+      "baseUrl": "/wiki/rest/api"
+    }
+  },
+  "resources": {
+    "space": {
+      "displayName": "Space",
+      "description": "Work with Confluence spaces",
+      "routes": [
+        {
+          "path": "/spaces",
+          "methods": ["get"]
+        },
+        {
+          "path": "/spaces/{id}",
+          "methods": ["get"]
+        },
+        {
+          "path": "/space",
+          "legacy": true,
+          "methods": ["post"]
+        },
+        {
+          "path": "/space/{spaceKey}",
+          "legacy": true,
+          "methods": ["put", "delete"]
+        }
+      ]
+    },
+    "page": {
+      "displayName": "Page",
+      "description": "Work with Confluence pages",
+      "routes": [
+        {
+          "path": "/pages",
+          "methods": ["get", "post"]
+        },
+        {
+          "path": "/pages/{id}",
+          "methods": ["get", "put", "delete"]
+        }
+      ]
+    }
+  }
+}

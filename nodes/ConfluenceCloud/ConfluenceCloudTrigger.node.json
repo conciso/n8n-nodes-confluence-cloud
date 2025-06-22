@@ -1,0 +1,9 @@
+{
+	"node": "dist/nodes/ConfluenceCloud/ConfluenceCloudTrigger.node.js",
+	"credentials": [
+		{
+			"name": "confluenceCloudApi",
+			"displayName": "Confluence Cloud API"
+		}
+	]
+}

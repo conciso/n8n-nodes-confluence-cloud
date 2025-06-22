@@ -1,0 +1,58 @@
+{
+  "name": "n8n-nodes-confluence-cloud",
+  "version": "0.1.0",
+  "description": "n8n node for Confluence Cloud REST API integration",
+  "keywords": [
+    "n8n-community-node-package",
+    "confluence",
+    "atlassian",
+    "wiki",
+    "collaboration"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "author": {
+    "name": "Thorsten Kamann",
+    "email": "thorsten.kamann@conciso.de"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<your-username>/n8n-nodes-confluence-cloud.git"
+  },
+  "engines": {
+    "node": ">=20.15"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp build",
+    "dev": "gulp dev",
+    "clean": "gulp clean",
+    "init": "gulp init"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/ConfluenceCloudApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/ConfluenceCloud/ConfluenceCloud.node.js",
+      "dist/nodes/ConfluenceCloud/ConfluenceCloudTrigger.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "@typescript-eslint/parser": "~8.34.1",
+    "eslint": "^8.57.1",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
+    "gulp": "^5.0.0",
+    "gulp-prettier": "^6.0.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}

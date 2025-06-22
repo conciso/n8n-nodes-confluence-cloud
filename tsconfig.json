@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"module": "commonjs",
+		"outDir": "./dist",
+		"rootDir": "./",
+		"strict": true,
+		"target": "ES2022",
+		"typeRoots": [
+			"./node_modules/@types",
+		],
+		"skipLibCheck": true
+	},
+	"include": [
+		"credentials/**/*",
+		"nodes/**/*"
+	],
+	"exclude": [
+		"node_modules/**/*",
+		"dist/**/*"
+	]
+}
