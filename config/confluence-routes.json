@@ -47,6 +47,32 @@
           "methods": ["get", "put", "delete"]
         }
       ]
+    },
+    "template": {
+      "displayName": "Template",
+      "description": "Work with Confluence templates",
+      "routes": [
+        {
+          "path": "/template/page",
+          "legacy": true,
+          "methods": ["get"]
+        },
+        {
+          "path": "/template/blueprint",
+          "legacy": true,
+          "methods": ["get"]
+        },
+        {
+          "path": "/template",
+          "legacy": true,
+          "methods": ["post", "put"]
+        },
+        {
+          "path": "/template/{contentTemplateId}",
+          "legacy": true,
+          "methods": ["get", "delete"]
+        }
+      ]
     }
   }
 }

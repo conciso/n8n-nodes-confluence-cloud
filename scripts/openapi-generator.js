@@ -439,8 +439,13 @@ exports.ConfluenceCloud = ConfluenceCloud;`;
                 .trim();
         }
 
+        // Check for pagination parameters (both start AND limit must be present)
+        const hasStart = operation.parameters?.some(p => p.name === 'start');
+        const hasLimit = operation.parameters?.some(p => p.name === 'limit');
+        const hasPagination = hasStart && hasLimit;
+
         const methodNames = {
-            get: path.includes('{') ? 'Get' : 'Get All',
+            get: hasPagination ? 'Get All' : 'Get',
             post: 'Create',
             put: 'Update',
             delete: 'Delete',
@@ -585,7 +590,15 @@ exports.ConfluenceCloud = ConfluenceCloud;`;
         // GET-Requests die Listen zurückgeben brauchen Pagination
         if (method !== 'get') return false;
         
-        // Pfade die auf Listen hinweisen
+        // Check for pagination parameters (both start AND limit must be present)
+        const hasStart = operation.parameters?.some(p => p.name === 'start');
+        const hasLimit = operation.parameters?.some(p => p.name === 'limit');
+        const hasPaginationParams = hasStart && hasLimit;
+        
+        // If pagination parameters exist, it's definitely a paginated endpoint
+        if (hasPaginationParams) return true;
+        
+        // Fallback: Legacy logic for operations without clear pagination parameters
         const listPaths = ['/spaces', '/pages', '/content', '/labels'];
         const isListPath = listPaths.some(listPath => 
             path === listPath || path.endsWith(listPath)

@@ -82,6 +82,17 @@ Create a **Confluence Cloud API** credential with:
 | **Update Page** | `PUT /pages/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-put) |
 | **Delete Page** | `DELETE /pages/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-delete) |
 
+### 📄 **Template Operations**
+
+| Operation | Method | API Version | Documentation |
+|-----------|--------|-------------|---------------|
+| **Get Content Templates** | `GET /template/page` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/intro/#api--template-page-get) |
+| **Get Blueprint Templates** | `GET /template/blueprint` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/intro/#api--template-blueprint-get) |
+| **Create Content Template** | `POST /template` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/intro/#api--template-post) |
+| **Update Content Template** | `PUT /template` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/intro/#api--template-put) |
+| **Get Content Template** | `GET /template/{contentTemplateId}` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/intro/#api--template-contentTemplateId-get) |
+| **Remove Template** | `DELETE /template/{contentTemplateId}` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/intro/#api--template-contentTemplateId-delete) |
+
 
 
 ## 🎯 Trigger Configuration
