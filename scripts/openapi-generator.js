@@ -181,7 +181,7 @@ export const ${resourceKey}Properties = ${JSON.stringify(properties, null, 2)};`
                 const operationValue = operation.operationId || `${method}_${route.path.replace(/[^a-zA-Z0-9]/g, '_')}`;
 
                 // Path parameters
-                const pathParams = this.extractPathParameters(route.path, operation);
+                const pathParams = this.extractPathParameters(route.path, operation, spec);
                 pathParams.forEach(param => {
                     properties.push(this.createParameterProperty(param, resourceKey, operationValue, spec));
                 });
@@ -193,7 +193,7 @@ export const ${resourceKey}Properties = ${JSON.stringify(properties, null, 2)};`
                 }
 
                 // Query parameters als Additional Fields (nach Pagination)
-                const queryParams = this.extractQueryParameters(operation);
+                const queryParams = this.extractQueryParameters(operation, spec);
                 if (queryParams.length > 0) {
                     const additionalFields = this.createAdditionalFields(queryParams, resourceKey, operationValue, spec);
                     if (additionalFields) {
@@ -311,48 +311,46 @@ exports.ConfluenceCloud = ConfluenceCloud;`;
         console.log('✅ Complete node generated as JavaScript file');
     }
 
-    extractPathParameters(path, operation) {
+    extractPathParameters(path, operation, spec) {
         const params = operation.parameters || [];
-        return params.filter(p => p.in === 'path');
+        return params
+            .map(p => this.resolveRef(p, spec))  // Resolve $ref
+            .filter(p => p.in === 'path');
     }
 
-    extractQueryParameters(operation) {
+    extractQueryParameters(operation, spec) {
         const params = operation.parameters || [];
-        return params.filter(p => p.in === 'query');
+        return params
+            .map(p => this.resolveRef(p, spec))  // Resolve $ref
+            .filter(p => p.in === 'query');
     }
 
     createParameterProperty(param, resourceKey, operationValue, spec) {
-        const fieldType = this.mapOpenApiType(param.schema, spec);
-        const enumOptions = this.generateOptionsForEnum(param.schema, spec);
+        // Resolve $ref if present
+        const resolvedParam = this.resolveRef(param, spec);
         
-        const property = {
-            displayName: this.formatDisplayName(param.name),
-            name: param.name,
-            type: fieldType,
-            required: param.required || false,
-            displayOptions: {
-                show: {
-                    resource: [resourceKey],
-                    operation: [operationValue],
-                },
+        // Use new generateParameterField method for better schema handling
+        const field = this.generateParameterField(resolvedParam, spec);
+        
+        // Add n8n-specific displayOptions
+        field.displayOptions = {
+            show: {
+                resource: [resourceKey],
+                operation: [operationValue],
             },
-            default: this.getDefaultValue(param.schema),
-            description: this.convertMarkdownToHtml(param.description || ''),
         };
         
-        // Füge Optionen für Enums hinzu
-        if (enumOptions && (fieldType === 'options' || fieldType === 'multiOptions')) {
-            property.options = enumOptions;
-            property.default = enumOptions[0]?.value || property.default;
-        }
+        // Set required flag
+        field.required = resolvedParam.required || false;
         
-        return property;
+        return field;
     }
 
     createAdditionalFields(queryParams, resourceKey, operationValue, spec) {
         // Filtere Pagination-Parameter aus, da wir eigene Controls haben
         const filteredParams = queryParams.filter(param => {
-            const paramName = param.name.toLowerCase();
+            const resolvedParam = this.resolveRef(param, spec);
+            const paramName = resolvedParam.name.toLowerCase();
             return !['limit', 'cursor', 'start', 'offset'].includes(paramName);
         });
 
@@ -361,31 +359,14 @@ exports.ConfluenceCloud = ConfluenceCloud;`;
         }
 
         const options = filteredParams.map(param => {
-            const fieldType = this.mapOpenApiType(param.schema, spec);
-            const enumOptions = this.generateOptionsForEnum(param.schema, spec);
+            // Use the new generateParameterField method
+            const field = this.generateParameterField(param, spec);
             
-            const option = {
-                displayName: this.formatDisplayName(param.name),
-                name: param.name,
-                type: fieldType,
-                default: this.getDefaultValue(param.schema),
-                description: this.convertMarkdownToHtml(param.description || ''),
-                routing: {
-                    request: {
-                        qs: {
-                            [param.name]: '={{$value}}',
-                        },
-                    },
-                },
-            };
+            // Remove displayOptions since this will be inside a collection
+            delete field.displayOptions;
+            delete field.required;
             
-            // Füge Optionen für Enums hinzu
-            if (enumOptions && (fieldType === 'options' || fieldType === 'multiOptions')) {
-                option.options = enumOptions;
-                option.default = enumOptions[0]?.value || option.default;
-            }
-            
-            return option;
+            return field;
         });
 
         return {
@@ -612,6 +593,144 @@ exports.ConfluenceCloud = ConfluenceCloud;`;
         const isSingleItem = /\{[^}]+\}$/.test(path);
         
         return (isListPath || isListOperation) && !isSingleItem;
+    }
+
+    /**
+     * Resolves $ref references in OpenAPI specs
+     * @param {object} ref - Object with $ref property
+     * @param {object} spec - OpenAPI specification
+     * @returns {object} Resolved object
+     */
+    resolveRef(ref, spec) {
+        if (!ref || !ref.$ref) return ref;
+        
+        const refPath = ref.$ref.replace('#/', '').split('/');
+        let resolved = spec;
+        
+        for (const segment of refPath) {
+            if (!resolved[segment]) {
+                console.warn(`⚠️ Could not resolve $ref: ${ref.$ref}`);
+                return ref;
+            }
+            resolved = resolved[segment];
+        }
+        
+        return resolved;
+    }
+
+    /**
+     * Generates n8n form field from OpenAPI parameter schema
+     * @param {object} parameter - OpenAPI parameter object
+     * @param {object} spec - OpenAPI specification for $ref resolution
+     * @returns {object} n8n form field configuration
+     */
+    generateParameterField(parameter, spec) {
+        // Resolve $ref if present
+        const resolvedParam = this.resolveRef(parameter, spec);
+        const schema = resolvedParam.schema || {};
+        
+        const baseField = {
+            displayName: this.formatDisplayName(resolvedParam.name),
+            name: resolvedParam.name,
+            description: resolvedParam.description || '',
+        };
+
+        // Handle different schema types
+        if (schema.type === 'array' && schema.items && schema.items.enum) {
+            // Array with enum values → multiOptions
+            return {
+                ...baseField,
+                type: 'multiOptions',
+                default: [],
+                options: schema.items.enum.map(value => ({
+                    name: this.formatDisplayName(value),
+                    value: value
+                })),
+                routing: {
+                    request: {
+                        qs: {
+                            [resolvedParam.name]: '={{$value.join(",")}}'  // Convert array to comma-separated string
+                        }
+                    }
+                }
+            };
+        } else if (schema.enum) {
+            // Single enum → options
+            return {
+                ...baseField,
+                type: 'options',
+                default: schema.default || schema.enum[0],
+                options: schema.enum.map(value => ({
+                    name: this.formatDisplayName(value),
+                    value: value
+                })),
+                routing: {
+                    request: {
+                        qs: {
+                            [resolvedParam.name]: '={{$value}}'
+                        }
+                    }
+                }
+            };
+        } else if (schema.type === 'boolean') {
+            return {
+                ...baseField,
+                type: 'boolean',
+                default: schema.default || false,
+                routing: {
+                    request: {
+                        qs: {
+                            [resolvedParam.name]: '={{$value}}'
+                        }
+                    }
+                }
+            };
+        } else if (schema.type === 'integer' || schema.type === 'number') {
+            return {
+                ...baseField,
+                type: 'number',
+                default: schema.default || (schema.minimum || 0),
+                typeOptions: {
+                    minValue: schema.minimum,
+                    maxValue: schema.maximum
+                },
+                routing: {
+                    request: {
+                        qs: {
+                            [resolvedParam.name]: '={{$value}}'
+                        }
+                    }
+                }
+            };
+        } else {
+            // Default to string
+            return {
+                ...baseField,
+                type: 'string',
+                default: schema.default || '',
+                routing: {
+                    request: {
+                        qs: {
+                            [resolvedParam.name]: '={{$value}}'
+                        }
+                    }
+                }
+            };
+        }
+    }
+
+    /**
+     * Formats a parameter name into a proper display name
+     * @param {string} name - Parameter name
+     * @returns {string} Formatted display name
+     */
+    formatDisplayName(name) {
+        return name
+            .replace(/([a-z])([A-Z])/g, '$1 $2') // camelCase → camel Case
+            .replace(/[_-]/g, ' ')               // underscores/hyphens → spaces
+            .replace(/\b\w/g, l => l.toUpperCase()) // Title Case
+            .replace(/\s+/g, ' ')                // normalize spaces
+            .trim();
     }
 
     // Generiert Pagination-Fields für eine Operation
