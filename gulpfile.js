@@ -1,6 +1,7 @@
 const { src, dest, series, parallel } = require('gulp');
 const { spawn, exec } = require('child_process');
 const fs = require('fs');
+require('dotenv').config();
 const { OpenAPIGenerator, downloadOpenAPISpec, saveOpenAPISpec } = require('./scripts/openapi-generator');
 
 // Download OpenAPI specs for all configured APIs
@@ -144,6 +145,66 @@ function startN8n(done) {
     setTimeout(done, 2000); // Wait 2 seconds
 }
 
+function createDeployTask(target) {
+    return function deployTo(done) {
+        const user = process.env[`${target.toUpperCase()}_DEPLOY_USER`];
+        const host = process.env[`${target.toUpperCase()}_DEPLOY_HOST`];
+        const remotePath = process.env[`${target.toUpperCase()}_DEPLOY_PATH`];
+        const containerName = process.env[`${target.toUpperCase()}_DEPLOY_CONTAINER`] || 'n8n';
+
+        if (!user || !host || !remotePath) {
+            done(new Error(`Missing ${target} deployment configuration. Check .env file.`));
+            return;
+        }
+
+        console.log(`🚀 Deploying to ${target}: ${user}@${host}:${remotePath}`);
+
+        const rsync = spawn('rsync', [
+            '-av',
+            '--delete',
+            '--relative',
+            'package.json',
+            'package-lock.json',
+            'index.js',
+            'node_modules/',
+            'dist/',
+            `${user}@${host}:${remotePath}/n8n-nodes-confluence-cloud/`
+        ], { stdio: 'inherit' });
+
+        rsync.on('close', (code) => {
+            if (code === 0) {
+                console.log('✅ Deploy successful, restarting container...');
+                createRestartTask(target)(done);
+            } else {
+                done(new Error('Rsync failed'));
+            }
+        });
+    };
+}
+
+function createRestartTask(target) {
+    return function restartContainer(done) {
+        const user = process.env[`${target.toUpperCase()}_DEPLOY_USER`];
+        const host = process.env[`${target.toUpperCase()}_DEPLOY_HOST`];
+        const containerName = process.env[`${target.toUpperCase()}_DEPLOY_CONTAINER`] || 'n8n';
+
+        console.log(`🔄 Restarting ${containerName} container on ${target}...`);
+        const restart = spawn('ssh', [
+            `${user}@${host}`,
+            `cd /opt/apps/${containerName} && docker-compose restart`
+        ], { stdio: 'inherit' });
+
+        restart.on('close', (code) => {
+            if (code === 0) {
+                console.log(`✅ Deployment to ${target} successful!`);
+            } else {
+                console.log(`⚠️  Container restart on ${target} failed`);
+            }
+            done();
+        });
+    };
+}
+
 // Task definitions
 const build = series(
     copyAssets,                         // Kopiere Assets (SVG, JSON)
@@ -155,6 +216,19 @@ const build = series(
 );
 const dev = series(build, stopN8n, startN8n);
 const init = series(cleanAll, install);
+const deployStaging = series(
+    clean,
+    build,
+    createDeployTask('staging'),
+    createRestartTask('staging')
+);
+
+const deployProduction = series(
+    clean,
+    build,
+    createDeployTask('production'),
+    createRestartTask('production')
+);
 
 // Individual tasks for debugging
 exports.downloadOpenAPI = downloadOpenAPI;
@@ -166,5 +240,8 @@ exports.format = format;
 exports.clean = clean;
 exports.build = build;
 exports.dev = dev;
+exports.deployStaging = deployStaging;
+exports.deployProduction = deployProduction;
+exports.deploy = deployStaging;
 exports.init = init;
 exports.default = build;

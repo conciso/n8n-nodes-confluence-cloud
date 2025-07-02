@@ -26,6 +26,8 @@
   "scripts": {
     "build": "gulp build",
     "dev": "gulp dev",
+    "deployProduction": "gulp deployProduction",
+    "deploy": "gulp deploy",
     "clean": "gulp clean",
     "init": "gulp init"
   },
@@ -54,5 +56,8 @@
   },
   "peerDependencies": {
     "n8n-workflow": "*"
+  },
+  "dependencies": {
+    "dotenv": "^17.0.1"
   }
 }

@@ -45,6 +45,10 @@
         {
           "path": "/pages/{id}",
           "methods": ["get", "put", "delete"]
+        },
+        {
+          "path": "/spaces/{id}/pages",
+          "methods": ["get"]
         }
       ]
     },
@@ -71,6 +75,17 @@
           "path": "/template/{contentTemplateId}",
           "legacy": true,
           "methods": ["get", "delete"]
+        }
+      ]
+    },
+    "search": {
+      "displayName": "Search",
+      "description": "Search for content in Confluence with CQL",
+      "routes": [
+        {
+          "path": "/content/search",
+          "legacy": true,
+          "methods": ["get"]
         }
       ]
     }

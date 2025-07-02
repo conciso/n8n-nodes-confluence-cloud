@@ -81,6 +81,7 @@ Create a **Confluence Cloud API** credential with:
 | **Get Page By Id** | `GET /pages/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-get) |
 | **Update Page** | `PUT /pages/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-put) |
 | **Delete Page** | `DELETE /pages/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-delete) |
+| **Get Pages In Space** | `GET /spaces/{id}/pages` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api--spaces-id-pages-get) |
 
 ### 📄 **Template Operations**
 
@@ -92,6 +93,12 @@ Create a **Confluence Cloud API** credential with:
 | **Update Content Template** | `PUT /template` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/intro/#api--template-put) |
 | **Get Content Template** | `GET /template/{contentTemplateId}` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/intro/#api--template-contentTemplateId-get) |
 | **Remove Template** | `DELETE /template/{contentTemplateId}` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/intro/#api--template-contentTemplateId-delete) |
+
+### 📄 **Search Operations**
+
+| Operation | Method | API Version | Documentation |
+|-----------|--------|-------------|---------------|
+| **Search Content By C Q L** | `GET /content/search` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/api-group-content/#api--content-search-get) |
 
 
 
