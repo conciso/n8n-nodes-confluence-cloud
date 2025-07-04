@@ -31,7 +31,11 @@
     "deploy:staging": "gulp deployStaging",
     "lint": "gulp lint",
     "clean": "gulp clean",
-    "init": "gulp init"
+    "init": "gulp init",
+    "release": "gulp releaseMinor",
+    "release:patch": "gulp releasePatch",
+    "release:minor": "gulp releaseMinor",
+    "release:major": "gulp releaseMajor"
   },
   "files": [
     "dist",
