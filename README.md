@@ -100,6 +100,28 @@ Create a **Confluence Cloud API** credential with:
 |-----------|--------|-------------|---------------|
 | **Search Content By C Q L** | `GET /content/search` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/api-group-content/#api--content-search-get) |
 
+### 📄 **Comment Operations**
+
+| Operation | Method | API Version | Documentation |
+|-----------|--------|-------------|---------------|
+| **Get Page Footer Comments** | `GET /pages/{id}/footer-comments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-footer-comments-get) |
+| **Get Page Inline Comments** | `GET /pages/{id}/inline-comments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-inline-comments-get) |
+| **Get Blog Post Footer Comments** | `GET /blogposts/{id}/footer-comments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--blogposts-id-footer-comments-get) |
+| **Get Blog Post Inline Comments** | `GET /blogposts/{id}/inline-comments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--blogposts-id-inline-comments-get) |
+| **Get Custom Content Comments** | `GET /custom-content/{id}/footer-comments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--custom-content-id-footer-comments-get) |
+| **Get Footer Comments** | `GET /footer-comments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--footer-comments-get) |
+| **Create Footer Comment** | `POST /footer-comments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--footer-comments-post) |
+| **Get Footer Comment By Id** | `GET /footer-comments/{comment-id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--footer-comments-comment-id-get) |
+| **Update Footer Comment** | `PUT /footer-comments/{comment-id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--footer-comments-comment-id-put) |
+| **Delete Footer Comment** | `DELETE /footer-comments/{comment-id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--footer-comments-comment-id-delete) |
+| **Get Footer Comment Children** | `GET /footer-comments/{id}/children` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--footer-comments-id-children-get) |
+| **Get Inline Comments** | `GET /inline-comments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-get) |
+| **Create Inline Comment** | `POST /inline-comments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-post) |
+| **Get Inline Comment By Id** | `GET /inline-comments/{comment-id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-comment-id-get) |
+| **Update Inline Comment** | `PUT /inline-comments/{comment-id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-comment-id-put) |
+| **Delete Inline Comment** | `DELETE /inline-comments/{comment-id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-comment-id-delete) |
+| **Get Inline Comment Children** | `GET /inline-comments/{id}/children` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-id-children-get) |
+
 
 
 ## 🎯 Trigger Configuration
