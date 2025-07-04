@@ -9,7 +9,7 @@ on:
     branches:
       - "development"
   release:
-    types: [published, edited]
+    types: [published]
 
 jobs:
   lint-and-build:
