@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Build and deploy Confluence custom node for n8n
 
 on:
   push:
