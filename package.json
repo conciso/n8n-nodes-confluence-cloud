@@ -27,8 +27,8 @@
   "scripts": {
     "build": "gulp build",
     "dev": "gulp dev",
-    "deploy:production": "gulp deployProduction",
-    "deploy:staging": "gulp deployStaging",
+    "deploy:production": "gulp lint && gulp deployProduction",
+    "deploy:staging": "gulp lint && gulp deployStaging",
     "lint": "gulp lint",
     "clean": "gulp clean",
     "init": "gulp init",
