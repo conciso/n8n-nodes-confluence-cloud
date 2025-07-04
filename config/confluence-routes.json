@@ -88,6 +88,56 @@
           "methods": ["get"]
         }
       ]
+    },
+    "comment": {
+      "displayName": "Comment",
+      "description": "Work with Confluence comments",
+      "routes": [
+        {
+          "path": "/pages/{id}/footer-comments",
+          "methods": ["get"]
+        },
+        {
+          "path": "/pages/{id}/inline-comments",
+          "methods": ["get"]
+        },
+        {
+          "path": "/blogposts/{id}/footer-comments",
+          "methods": ["get"]
+        },
+        {
+          "path": "/blogposts/{id}/inline-comments",
+          "methods": ["get"]
+        },
+        {
+          "path": "/custom-content/{id}/footer-comments",
+          "methods": ["get"]
+        },
+        {
+          "path": "/footer-comments",
+          "methods": ["get", "post"]
+        },
+        {
+          "path": "/footer-comments/{comment-id}",
+          "methods": ["get", "put", "delete"]
+        },
+        {
+          "path": "/footer-comments/{id}/children",
+          "methods": ["get"]
+        },
+        {
+          "path": "/inline-comments",
+          "methods": ["get", "post"]
+        },
+        {
+          "path": "/inline-comments/{comment-id}",
+          "methods": ["get", "put", "delete"]
+        },
+        {
+          "path": "/inline-comments/{id}/children",
+          "methods": ["get"]
+        }
+      ]
     }
   }
 }
