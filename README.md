@@ -2,7 +2,7 @@
 
 A powerful n8n Community Node for seamless integration with Confluence Cloud REST API. This node provides comprehensive access to Confluence Cloud's capabilities with automatic API validation, deprecation detection, and intelligent error handling.
 
-[![npm version](https://badge.fury.io/js/n8n-nodes-confluence-cloud.svg)](https://www.npmjs.com/package/n8n-nodes-confluence-cloud)
+[![npm version](https://img.shields.io/npm/v/n8n-nodes-confluence-cloud.svg)](https://www.npmjs.com/package/n8n-nodes-confluence-cloud)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## ✨ Features
