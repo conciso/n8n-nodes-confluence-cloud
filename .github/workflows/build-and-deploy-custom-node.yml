@@ -14,10 +14,7 @@ on:
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
-    if: |
-      (github.event_name == 'push' && github.ref == 'refs/heads/development') ||
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feature/')) ||
-      (github.event_name == 'pull_request')
+    if: github.event_name != 'pull_request'
     
     steps:
     - name: Checkout code
@@ -64,6 +61,16 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
+
+        # Debug: Key-Vergleich
+        echo "=== Key validation ==="
+        ssh-keygen -l -f ~/.ssh/id_rsa || echo "Key format problem"
+        
+        # Test SSH direkt
+        ssh -o BatchMode=yes -o ConnectTimeout=10 ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} echo "SSH works" || echo "SSH connection failed"
+        
+
+
         ssh-add ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.STAGING_HOST }} >> ~/.ssh/known_hosts
         
