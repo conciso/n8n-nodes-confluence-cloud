@@ -33,18 +33,6 @@ jobs:
       
     - name: Build project
       run: npm run build
-    
-    - name: Debug NPM
-      run: |
-        echo "Testing NPM access..."
-        npm view n8n-nodes-confluence-cloud versions --json
-        echo "Current package version:"
-        node -p "require('./package.json').version"
-
-    - name: Deploy to Production
-      run: npm run deploy:production
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   deploy-staging:
     runs-on: ubuntu-latest
