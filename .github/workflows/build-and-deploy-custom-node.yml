@@ -14,7 +14,6 @@ on:
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
     
     steps:
     - name: Checkout code
@@ -38,6 +37,7 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    needs: lint-and-build
     
     steps:
     - name: Checkout PR code
