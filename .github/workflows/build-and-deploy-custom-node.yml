@@ -6,7 +6,7 @@ on:
       - "development"
       - "feature/**"
     tags:
-      - "r*.*.*"
+      - "v*.*.*"
   pull_request:
     branches:
       - "development"
@@ -94,6 +94,9 @@ jobs:
         
     - name: Install dependencies
       run: npm ci
+      
+    - name: Build project
+      run: npm run build
       
     - name: Deploy to Production
       run: npm run deploy:production
