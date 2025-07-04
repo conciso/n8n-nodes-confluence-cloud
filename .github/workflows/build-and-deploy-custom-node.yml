@@ -12,7 +12,7 @@ on:
       - "development"
 
 jobs:
-  build-and-test:
+  lint-and-build:
     runs-on: ubuntu-latest
     
     steps:
@@ -27,51 +27,23 @@ jobs:
         
     - name: Install dependencies
       run: npm ci
+
+    - name: Lint code
+      run: npm run lint
       
     - name: Build project
       run: npm run build
-      
-    - name: Lint code
-      run: npm run lint
-
-  validate-pr:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    needs: build-and-test
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Validate package.json
-      run: npm run build
-      
-    - name: Check workflow syntax
-      run: |
-        if [ -f .github/workflows/build-and-deploy-custom-node.yml ]; then
-          echo "✅ Workflow file exists and is valid YAML"
-        fi
-      
-    - name: Dry-run deployment (only validate, don't deploy)
-      run: echo "✅ PR validation completed - no actual deployment"
 
   deploy-staging:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/development' && github.event_name == 'push'
-    needs: build-and-test
+    if: github.event_name == 'pull_request'
+    needs: lint-and-build
     
     steps:
-    - name: Checkout code
+    - name: Checkout  PR code
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -87,19 +59,17 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
         
-    - name: Setup deployment environment
-      run: |
-        echo "STAGING_DEPLOY_USER=${{ secrets.STAGING_USER }}" >> .env
-        echo "STAGING_DEPLOY_HOST=${{ secrets.STAGING_HOST }}" >> .env
-        echo "STAGING_DEPLOY_PATH=${{ secrets.STAGING_PATH }}" >> .env
-        echo "STAGING_DEPLOY_CONTAINER=n8n" >> .env
-        
     - name: Add server to known hosts
       run: |
         ssh-keyscan -H ${{ secrets.STAGING_HOST }} >> ~/.ssh/known_hosts
         
     - name: Deploy to Staging
       run: npm run deploy
+      env:
+        STAGING_DEPLOY_USER: ${{ secrets.STAGING_USER }}
+        STAGING_DEPLOY_HOST: ${{ secrets.STAGING_HOST }}
+        STAGING_DEPLOY_PATH: ${{ secrets.STAGING_PATH }}
+        STAGING_DEPLOY_CONTAINER: ${{ secrets.STAGING_CONTAINER_NAME }}
 
   # Diesen Job entfernen - nur development branch
   # prepare-release Job wird nicht benötigt
