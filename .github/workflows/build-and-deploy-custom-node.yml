@@ -60,29 +60,16 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-
-        # Debug: Key-Vergleich
-        echo "=== Key validation ==="
-        ssh-keygen -l -f ~/.ssh/id_rsa || echo "Key format problem"
-        
-        # Test SSH direkt
-        ssh -o BatchMode=yes -o ConnectTimeout=10 ${{ secrets.STAGING_USER }}@${{ secrets.STAGING_HOST }} echo "SSH works" || echo "SSH connection failed"
-        
-
-
         ssh-add ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.STAGING_HOST }} >> ~/.ssh/known_hosts
         
     - name: Deploy to Staging
-      run: npm run deploy
+      run: npm run deploy:staging
       env:
         STAGING_DEPLOY_USER: ${{ secrets.STAGING_USER }}
         STAGING_DEPLOY_HOST: ${{ secrets.STAGING_HOST }}
         STAGING_DEPLOY_PATH: ${{ secrets.STAGING_PATH }}
         STAGING_DEPLOY_CONTAINER: ${{ secrets.STAGING_CONTAINER_NAME }}
-
-  # Diesen Job entfernen - nur development branch
-  # prepare-release Job wird nicht benötigt
 
   deploy-production:
     runs-on: ubuntu-latest
@@ -103,6 +90,6 @@ jobs:
       run: npm ci
       
     - name: Deploy to Production
-      run: npm run deployProduction
+      run: npm run deploy:production
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

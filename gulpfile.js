@@ -1,6 +1,7 @@
 const { src, dest, series, parallel } = require('gulp');
 const { spawn, exec } = require('child_process');
 const fs = require('fs');
+const os = require('os');
 require('dotenv').config();
 const { OpenAPIGenerator, downloadOpenAPISpec, saveOpenAPISpec } = require('./scripts/openapi-generator');
 
@@ -205,14 +206,49 @@ function createRestartTask(target) {
     };
 }
 
+function publishToNpm(done) {
+    console.log('🚀 Publishing to NPM...');
+    const npmToken = process.env.NPM_TOKEN;
+    
+    if (!npmToken) {
+        done(new Error('Missing NPM_TOKEN environment variable'));
+        return;
+    }
+
+    const npmrcPath = `${os.homedir()}/.npmrc`;
+    const npmrcContent = `//registry.npmjs.org/:_authToken=${npmToken}\n`;
+    
+    // Backup existing .npmrc
+    let existingNpmrc = '';
+    if (fs.existsSync(npmrcPath)) {
+        existingNpmrc = fs.readFileSync(npmrcPath, 'utf8');
+    }
+    
+    // Write new .npmrc with token
+    fs.writeFileSync(npmrcPath, npmrcContent);
+    
+    const npm = spawn('npm', ['publish'], { stdio: 'inherit' });
+    
+    npm.on('close', (code) => {
+        // Restore original .npmrc
+        if (existingNpmrc) {
+            fs.writeFileSync(npmrcPath, existingNpmrc);
+        } else {
+            fs.unlinkSync(npmrcPath);
+        }
+        
+        done(code === 0 ? null : new Error('NPM publish failed'));
+    });
+}
+
 // Task definitions
 const build = series(
-    copyAssets,                         // Kopiere Assets (SVG, JSON)
-    downloadOpenAPI,                    // Lade OpenAPI
-    generateFromOpenAPI,                // Generiere JavaScript direkt
-    copyIcons,                          // Kopiere Icons nach der Generierung
-    typescript,                         // Kompiliere TypeScript (z.B. Trigger)
-    format                              // Format den generierten Code
+    copyAssets,
+    downloadOpenAPI,
+    generateFromOpenAPI,
+    copyIcons, 
+    typescript,
+    format 
 );
 const dev = series(build, stopN8n, startN8n);
 const init = series(cleanAll, install);
@@ -226,8 +262,7 @@ const deployStaging = series(
 const deployProduction = series(
     clean,
     build,
-    createDeployTask('production'),
-    createRestartTask('production')
+    publishToNpm
 );
 
 // Individual tasks for debugging
@@ -242,6 +277,5 @@ exports.build = build;
 exports.dev = dev;
 exports.deployStaging = deployStaging;
 exports.deployProduction = deployProduction;
-exports.deploy = deployStaging;
 exports.init = init;
 exports.default = build;
