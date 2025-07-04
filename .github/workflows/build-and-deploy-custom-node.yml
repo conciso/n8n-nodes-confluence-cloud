@@ -14,6 +14,10 @@ on:
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/development') ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/feature/')) ||
+      (github.event_name == 'pull_request')
     
     steps:
     - name: Checkout code
@@ -40,7 +44,7 @@ jobs:
     needs: lint-and-build
     
     steps:
-    - name: Checkout  PR code
+    - name: Checkout PR code
       uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
@@ -56,13 +60,11 @@ jobs:
       
     - name: Setup SSH
       run: |
+        eval $(ssh-agent -s)
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.STAGING_HOST }} >> ~/.ssh/known_hosts
-        
-    - name: Add server to known hosts
-      run: |
+        ssh-add ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.STAGING_HOST }} >> ~/.ssh/known_hosts
         
     - name: Deploy to Staging
