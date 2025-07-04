@@ -16,6 +16,7 @@ confluence-openapi-v*.json
 .env.development.local
 .env.test.local
 .env.production.local
+.hidden.txt
 
 # Logs
 logs

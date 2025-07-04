@@ -1,6 +1,7 @@
 const { src, dest, series, parallel } = require('gulp');
 const { spawn, exec } = require('child_process');
 const fs = require('fs');
+const os = require('os');
 require('dotenv').config();
 const { OpenAPIGenerator, downloadOpenAPISpec, saveOpenAPISpec } = require('./scripts/openapi-generator');
 
@@ -205,14 +206,102 @@ function createRestartTask(target) {
     };
 }
 
+function publishToNpm(done) {
+    const npmToken = process.env.NPM_TOKEN;
+    
+    if (!npmToken) {
+        done(new Error('Missing NPM_TOKEN'));
+        return;
+    }
+
+    console.log('Publishing to NPM...');
+
+    const npmrcPath = `${os.homedir()}/.npmrc`;
+    const npmrcContent = `//registry.npmjs.org/:_authToken=${npmToken}\n`;
+    
+    // Backup existing .npmrc
+    let existingNpmrc = '';
+    if (fs.existsSync(npmrcPath)) {
+        existingNpmrc = fs.readFileSync(npmrcPath, 'utf8');
+    }
+    
+    // Write new .npmrc with token
+    fs.writeFileSync(npmrcPath, npmrcContent);
+    
+    const npm = spawn('npm', ['publish'], { stdio: 'inherit' });
+    
+    npm.on('close', (code) => {
+        // Restore original .npmrc
+        if (existingNpmrc) {
+            fs.writeFileSync(npmrcPath, existingNpmrc);
+        } else if (fs.existsSync(npmrcPath)) {
+            fs.unlinkSync(npmrcPath);
+        }
+        
+        if (code === 0) {
+            console.log('✅ Package published to NPM');
+        }
+        
+        done(code === 0 ? null : new Error('NPM publish failed'));
+    });
+}
+
+function release(type) {
+    return function createRelease(done) {
+        const { execSync } = require('child_process');
+        const validTypes = ['patch', 'minor', 'major'];
+        
+        if (!validTypes.includes(type)) {
+            done(new Error(`Invalid version type: ${type}. Use: ${validTypes.join(', ')}`));
+            return;
+        }
+        
+        try {
+            // Branch-Check
+            const branch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+            if (branch !== 'development') {
+                done(new Error(`Wrong branch: ${branch}. Switch to development first.`));
+                return;
+            }
+            
+            console.log(`Creating ${type} release...`);
+            
+            // Version Bump
+            const npm = spawn('npm', ['version', type], { stdio: 'inherit' });
+            
+            npm.on('close', (code) => {
+                if (code === 0) {
+                    console.log('Pushing release to GitHub...');
+                    
+                    // Push mit Tags
+                    const git = spawn('git', ['push', 'origin', 'development', '--follow-tags'], { stdio: 'inherit' });
+                    
+                    git.on('close', (pushCode) => {
+                        if (pushCode === 0) {
+                            console.log('✅ Release created and pushed successfully');
+                            console.log('Create GitHub Release to trigger production deployment');
+                        }
+                        done(pushCode === 0 ? null : new Error('Git push failed'));
+                    });
+                } else {
+                    done(new Error('Version bump failed'));
+                }
+            });
+            
+        } catch (error) {
+            done(error);
+        }
+    };
+}
+
 // Task definitions
 const build = series(
-    copyAssets,                         // Kopiere Assets (SVG, JSON)
-    downloadOpenAPI,                    // Lade OpenAPI
-    generateFromOpenAPI,                // Generiere JavaScript direkt
-    copyIcons,                          // Kopiere Icons nach der Generierung
-    typescript,                         // Kompiliere TypeScript (z.B. Trigger)
-    format                              // Format den generierten Code
+    copyAssets,
+    downloadOpenAPI,
+    generateFromOpenAPI,
+    copyIcons, 
+    typescript,
+    format 
 );
 const dev = series(build, stopN8n, startN8n);
 const init = series(cleanAll, install);
@@ -226,8 +315,7 @@ const deployStaging = series(
 const deployProduction = series(
     clean,
     build,
-    createDeployTask('production'),
-    createRestartTask('production')
+    publishToNpm
 );
 
 // Individual tasks for debugging
@@ -242,6 +330,8 @@ exports.build = build;
 exports.dev = dev;
 exports.deployStaging = deployStaging;
 exports.deployProduction = deployProduction;
-exports.deploy = deployStaging;
+exports.releasePatch = release('patch');
+exports.releaseMinor = release('minor'); 
+exports.releaseMajor = release('major');
 exports.init = init;
 exports.default = build;
