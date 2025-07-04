@@ -14,7 +14,7 @@ on:
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
-    if: github.event_name != 'release'
+    if: github.event_name != 'release' && github.event_name != 'pull_request'
     
     steps:
     - name: Checkout code
@@ -38,7 +38,6 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    needs: lint-and-build
     
     steps:
     - name: Checkout PR code
@@ -57,9 +56,6 @@ jobs:
 
     - name: Lint code
       run: npm run lint
-      
-    - name: Build project
-      run: npm run build
       
     - name: Setup SSH
       run: |

@@ -102,14 +102,16 @@ function copyIcons() {
         .pipe(dest('dist/nodes'));
 }
 
-// ESLint (für credentials und generierte Dateien)
+// ESLint (for credentials and nodes)
 function lint(done) {
-    const eslint = spawn('npx', ['eslint', 'credentials', 'dist', '--ext', '.ts,.js', '--fix'], { stdio: 'inherit' });
+    const eslint = spawn('npx', ['eslint', '--fix', 'credentials/**/*.ts', 'nodes/**/*.ts'], { stdio: 'inherit' });
     eslint.on('close', (code) => {
-        if (code !== 0) {
-            console.log('⚠️  ESLint found issues, but continuing...');
+        if (code === 0) {
+            console.log('✅ ESLint passed');
+            done();
+        } else {
+            done(new Error('ESLint found errors - build failed'));
         }
-        done(); // Continue regardless of ESLint result
     });
 }
 
