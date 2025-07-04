@@ -29,6 +29,7 @@
     "dev": "gulp dev",
     "deployProduction": "gulp deployProduction",
     "deploy": "gulp deploy",
+    "lint": "gulp lint",
     "clean": "gulp clean",
     "init": "gulp init"
   },
