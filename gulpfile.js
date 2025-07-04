@@ -191,7 +191,7 @@ function createRestartTask(target) {
         console.log(`🔄 Restarting ${containerName} container on ${target}...`);
         const restart = spawn('ssh', [
             `${user}@${host}`,
-            `cd /opt/apps/${containerName} && docker-compose restart`
+            `docker restart ${containerName}`
         ], { stdio: 'inherit' });
 
         restart.on('close', (code) => {
