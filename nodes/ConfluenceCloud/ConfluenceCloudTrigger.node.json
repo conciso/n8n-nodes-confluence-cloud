@@ -1,5 +1,8 @@
 {
-	"node": "dist/nodes/ConfluenceCloud/ConfluenceCloudTrigger.node.js",
+	"node": "n8n-nodes-base.ConfluenceCloudTrigger",
+	"nodeVersion": "1.0",
+  "codexVersion": "1.0",
+	"categories": ["Development", "Productivity"],
 	"credentials": [
 		{
 			"name": "confluenceCloudApi",

@@ -1,7 +1,10 @@
 {
-  "name": "n8n-nodes-confluence-cloud",
-  "version": "1.2.5",
+  "name": "@conciso/n8n-nodes-confluence-cloud",
+  "version": "1.2.14",
   "description": "n8n node for Confluence Cloud REST API integration",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "n8n-community-node-package",
     "confluence",
@@ -38,8 +41,7 @@
     "release:major": "gulp releaseMajor"
   },
   "files": [
-    "dist",
-    "index.js"
+    "dist"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
@@ -47,8 +49,7 @@
       "dist/credentials/ConfluenceCloudApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/ConfluenceCloud/ConfluenceCloud.node.js",
-      "dist/nodes/ConfluenceCloud/ConfluenceCloudTrigger.node.js"
+      "dist/nodes/ConfluenceCloud/ConfluenceCloud.node.js"
     ]
   },
   "devDependencies": {
