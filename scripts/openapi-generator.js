@@ -271,7 +271,6 @@ export const mainProperties = [
         const nodeCode = `"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfluenceCloud = void 0;
-//const n8n_workflow_1 = require("n8n-workflow");
 
 class ConfluenceCloud {
     constructor() {    
