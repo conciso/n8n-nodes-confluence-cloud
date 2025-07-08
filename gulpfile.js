@@ -104,7 +104,7 @@ function copyIcons() {
 
 // ESLint (for credentials and nodes)
 function lint(done) {
-    const eslint = spawn('npx', ['eslint', '--fix', 'credentials/**/*.ts', 'nodes/**/*.ts'], { stdio: 'inherit' });
+    const eslint = spawn('npx', ['eslint', '--fix', 'credentials/**/*.ts', '--ignore-pattern', '!nodes/**/*.ts'], { stdio: 'inherit' });
     eslint.on('close', (code) => {
         if (code === 0) {
             console.log('✅ ESLint passed');
