@@ -271,38 +271,39 @@ export const mainProperties = [
         const nodeCode = `"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfluenceCloud = void 0;
-const n8n_workflow_1 = require("n8n-workflow");
 
 class ConfluenceCloud {
-    description = {
-        displayName: 'Confluence Cloud',
-        name: 'confluenceCloud',
-        icon: 'file:confluence.svg',
-        group: ['output'],
-        version: 1,
-        subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-        description: 'Zugriff auf die Confluence Cloud REST API - Auto-generated from OpenAPI',
-        defaults: {
-            name: 'Confluence Cloud',
-        },
-        inputs: [n8n_workflow_1.NodeConnectionType.Main],
-        outputs: [n8n_workflow_1.NodeConnectionType.Main],
-        usableAsTool: true,
-        credentials: [
-            {
-                name: 'confluenceCloudApi',
-                required: true,
+    constructor() {    
+        this.description = {
+            displayName: 'Confluence Cloud',
+            name: 'confluenceCloud',
+            icon: 'file:confluence.svg',
+            group: ['output'],
+            version: 1,
+            subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
+            description: 'Access to the Confluence Cloud REST API - Auto-generated from OpenAPI',
+            defaults: {
+                name: 'Confluence Cloud',
             },
-        ],
-        requestDefaults: {
-            baseURL: '={{$credentials.domain}}',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
+            inputs: ["main"],
+            outputs: ["main"],
+            usableAsTool: true,
+            credentials: [
+                {
+                    name: 'confluenceCloudApi',
+                    required: true,
+                },
+            ],
+            requestDefaults: {
+                baseURL: '={{$credentials.domain}}',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
             },
-        },
-        properties: ${JSON.stringify(allProperties, null, 8)},
-    };
+            properties: ${JSON.stringify(allProperties, null, 8)},
+        };
+    }
 }
 exports.ConfluenceCloud = ConfluenceCloud;`;
 

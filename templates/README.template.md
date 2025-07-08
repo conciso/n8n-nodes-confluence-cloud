@@ -14,13 +14,6 @@ A powerful n8n Community Node for seamless integration with Confluence Cloud RES
 - **Built-in Error Handling**: Comprehensive error messages with actionable solutions
 - **OpenAPI-Generated**: Automatically generated from official Confluence API specifications
 
-### 🎯 **Confluence Cloud Trigger**
-- **Real-time Content Monitoring**: Poll for new or updated content
-- **Flexible Filtering**: Filter by spaces, labels, authors, and content types
-- **Template-based Configuration**: Easy setup with pre-configured templates
-- **Custom CQL Support**: Advanced users can write custom Confluence Query Language expressions
-- **Smart Time Handling**: Configurable lookback periods for initial runs
-
 ### 🛡️ **Quality Assurance**
 - **Deprecated API Detection**: Build fails if deprecated APIs are detected
 - **Missing Route Validation**: Automatic validation of API route configurations
@@ -64,33 +57,6 @@ Create a **Confluence Cloud API** credential with:
 
 {{OPERATIONS_TABLE}}
 
-## 🎯 Trigger Configuration
-
-### Template Options
-
-{{TRIGGER_TEMPLATES_TABLE}}
-
-### Filter Options
-
-| Filter | Type | Description | Example |
-|--------|------|-------------|---------|
-| **Space Keys** | String | Comma-separated space keys | `DOCS, TEAM, HELP` |
-| **Labels** | String | Comma-separated labels | `urgent, review, draft` |
-| **Author** | String | Confluence Account ID | `99:27935d01-XXXX-XXXX-XXXX-a9b8d3b2ae2e` |
-| **Initial Lookback** | Select | How far back to look initially | `1h, 6h, 12h, 1d, 3d, 1w, 2w, 1month` |
-
-### Advanced: Custom CQL
-
-For power users, write custom Confluence Query Language expressions:
-
-```cql
-space in ("DOCS", "TEAM") AND 
-type = page AND 
-(label = "urgent" OR label = "review") AND 
-creator = "99:27935d01-XXXX-XXXX-XXXX-a9b8d3b2ae2e" AND
-created >= now("-1w")
-```
-
 ## 💡 Usage Examples
 
 ### Example 1: Create a New Page
@@ -111,19 +77,7 @@ created >= now("-1w")
 }
 ```
 
-### Example 2: Monitor New Pages in Specific Spaces
-
-```javascript
-// Trigger Configuration
-{
-  "queryType": "template",
-  "template": "new_pages",
-  "spaceKeys": "DOCS, ENGINEERING",
-  "initialLookback": "1d"
-}
-```
-
-### Example 3: List All Spaces
+### Example 2: List All Spaces
 
 ```javascript
 // Simple space listing
@@ -154,11 +108,8 @@ npm install
 # Build the project
 npm run build
 
-# Run tests
-npm test
-
-# Format code
-npm run format
+# Build and run in dev mode
+npm run dev # then open browser with http://localhost:5678
 ```
 
 ### Architecture
@@ -192,7 +143,7 @@ Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md)
      "legacy": false
    }
    ```
-3. Run `npm run build` to generate operations
+3. Run `npm run dev` to generate operations
 4. Test your changes
 
 ## 📋 API Compatibility
@@ -201,8 +152,6 @@ Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md)
 |---------------------|----------------|-------|
 | **REST API v2** | ✅ Full Support | Primary API version |
 | **REST API v1** | 🟡 Legacy Support | For operations not yet in V2 |
-| **Content API** | ✅ Supported | Via V2 endpoints |
-| **Space API** | ✅ Supported | Both V1 and V2 |
 
 ## 🐛 Troubleshooting
 
