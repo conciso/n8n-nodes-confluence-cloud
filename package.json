@@ -1,6 +1,6 @@
 {
   "name": "@conciso/n8n-nodes-confluence-cloud",
-  "version": "1.2.14",
+  "version": "1.2.15",
   "description": "n8n node for Confluence Cloud REST API integration",
   "publishConfig": {
     "access": "public"
