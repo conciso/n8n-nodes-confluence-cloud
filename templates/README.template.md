@@ -2,7 +2,7 @@
 
 A powerful n8n Community Node for seamless integration with Confluence Cloud REST API. This node provides comprehensive access to Confluence Cloud's capabilities with automatic API validation, deprecation detection, and intelligent error handling.
 
-[![npm version](https://img.shields.io/npm/v/n8n-nodes-confluence-cloud.svg)](https://www.npmjs.com/package/n8n-nodes-confluence-cloud)
+[![npm version](https://img.shields.io/npm/v/@conciso/n8n-nodes-confluence-cloud.svg)](https://www.npmjs.com/package/@conciso/n8n-nodes-confluence-cloud)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## ✨ Features
@@ -25,11 +25,11 @@ Install the node using n8n's Community Nodes feature:
 
 1. **Via n8n Interface:**
    - Go to **Settings** → **Community Nodes**
-   - Install package: `n8n-nodes-confluence-cloud`
+   - Install package: `@conciso/n8n-nodes-confluence-cloud`
 
 2. **Via npm (for self-hosted n8n):**
    ```bash
-   npm install n8n-nodes-confluence-cloud
+   npm install @conciso/n8n-nodes-confluence-cloud
    ```
 
 For detailed installation instructions, see the [n8n Community Nodes documentation](https://docs.n8n.io/integrations/community-nodes/installation/).
