@@ -8,5 +8,17 @@
 			"name": "confluenceCloudApi",
 			"displayName": "Confluence Cloud API"
 		}
-	]
+	],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://github.com/conciso/n8n-nodes-confluence-cloud?tab=readme-ov-file#-credentials-setup"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/conciso/n8n-nodes-confluence-cloud?tab=readme-ov-file#-n8n-nodes-confluence-cloud"
+			}
+		]
+	}
 }

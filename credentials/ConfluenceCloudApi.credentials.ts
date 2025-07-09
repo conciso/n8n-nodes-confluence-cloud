@@ -8,7 +8,8 @@ import {
 export class ConfluenceCloudApi implements ICredentialType {
   name = 'confluenceCloudApi';
   displayName = 'Confluence Cloud API';
-  documentationUrl = 'https://developer.atlassian.com/cloud/confluence/rest/v2/intro/';
+  documentationUrl =
+    'https://github.com/conciso/n8n-nodes-confluence-cloud?tab=readme-ov-file#-credentials-setup';
   properties: INodeProperties[] = [
     {
       displayName: 'Domain',
