@@ -49,6 +49,10 @@
         {
           "path": "/spaces/{id}/pages",
           "methods": ["get"]
+        },
+        {
+          "path": "/labels/{id}/pages",
+          "methods": ["get"]
         }
       ]
     },
