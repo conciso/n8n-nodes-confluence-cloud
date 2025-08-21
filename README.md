@@ -75,7 +75,7 @@ Create a **Confluence Cloud API** credential with:
 | **Update Page** | `PUT /pages/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-put) |
 | **Delete Page** | `DELETE /pages/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-delete) |
 | **Get Pages In Space** | `GET /spaces/{id}/pages` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api--spaces-id-pages-get) |
-| **Get Label Pages** | `GET /labels/{id}/pages` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--labels-id-pages-get) |
+| **Get Pages For Label** | `GET /labels/{id}/pages` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--labels-id-pages-get) |
 
 ### 📄 **Template Operations**
 
