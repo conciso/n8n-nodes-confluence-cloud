@@ -148,9 +148,38 @@
       "description": "Work with Confluence labels",
       "routes": [
         {
+          "path": "/attachments/{id}/labels",
+          "methods": ["get"]
+        },
+        {
+          "path": "/blogposts/{id}/labels",
+          "methods": ["get"]
+        },
+        {
+          "path": "/custom-content/{id}/labels",
+          "methods": ["get"]
+        },
+        {
           "path": "/labels",
           "methods": ["get"]
+        },
+        {
+          "path": "/pages/{id}/labels",
+          "methods": ["get"]
+        },
+        {
+          "path": "/spaces/{id}/labels",
+          "methods": ["get"]
+        },
+        {
+          "path": "/spaces/{id}/content/labels",
+          "methods": ["get"]
+        },
+        {
+          "path": "/pages/{id}/labels",
+          "methods": ["get"]
         }
+
       ]
     }
   }

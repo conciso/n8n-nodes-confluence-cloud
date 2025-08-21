@@ -120,9 +120,13 @@ Create a **Confluence Cloud API** credential with:
 
 | Operation | Method | API Version | Documentation |
 |-----------|--------|-------------|---------------|
+| **Get Attachment Labels** | `GET /attachments/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--attachments-id-labels-get) |
+| **Get Blog Post Labels** | `GET /blogposts/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--blogposts-id-labels-get) |
+| **Get Custom Content Labels** | `GET /custom-content/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--custom-content-id-labels-get) |
 | **Get Labels** | `GET /labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--labels-get) |
-
-
+| **Get Page Labels** | `GET /pages/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-labels-get) |
+| **Get Space Labels** | `GET /spaces/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api--spaces-id-labels-get) |
+| **Get Space Content Labels** | `GET /spaces/{id}/content/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--spaces-id-content-labels-get) |
 
 ## 💡 Usage Examples
 
