@@ -116,6 +116,12 @@ Create a **Confluence Cloud API** credential with:
 | **Delete Inline Comment** | `DELETE /inline-comments/{comment-id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-comment-id-delete) |
 | **Get Inline Comment Children** | `GET /inline-comments/{id}/children` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-id-children-get) |
 
+### 📄 **Label Operations**
+
+| Operation | Method | API Version | Documentation |
+|-----------|--------|-------------|---------------|
+| **Get Labels** | `GET /labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--labels-get) |
+
 
 
 ## 💡 Usage Examples

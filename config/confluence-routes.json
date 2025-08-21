@@ -142,6 +142,16 @@
           "methods": ["get"]
         }
       ]
+    },
+    "label": {
+      "displayName": "Label",
+      "description": "Work with Confluence labels",
+      "routes": [
+        {
+          "path": "/labels",
+          "methods": ["get"]
+        }
+      ]
     }
   }
 }
