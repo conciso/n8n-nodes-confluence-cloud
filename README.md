@@ -75,6 +75,7 @@ Create a **Confluence Cloud API** credential with:
 | **Update Page** | `PUT /pages/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-put) |
 | **Delete Page** | `DELETE /pages/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-delete) |
 | **Get Pages In Space** | `GET /spaces/{id}/pages` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api--spaces-id-pages-get) |
+| **Get Label Pages** | `GET /labels/{id}/pages` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--labels-id-pages-get) |
 
 ### 📄 **Template Operations**
 
@@ -114,6 +115,19 @@ Create a **Confluence Cloud API** credential with:
 | **Update Inline Comment** | `PUT /inline-comments/{comment-id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-comment-id-put) |
 | **Delete Inline Comment** | `DELETE /inline-comments/{comment-id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-comment-id-delete) |
 | **Get Inline Comment Children** | `GET /inline-comments/{id}/children` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--inline-comments-id-children-get) |
+
+### 📄 **Label Operations**
+
+| Operation | Method | API Version | Documentation |
+|-----------|--------|-------------|---------------|
+| **Get Attachment Labels** | `GET /attachments/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--attachments-id-labels-get) |
+| **Get Blog Post Labels** | `GET /blogposts/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--blogposts-id-labels-get) |
+| **Get Custom Content Labels** | `GET /custom-content/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--custom-content-id-labels-get) |
+| **Get Labels** | `GET /labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--labels-get) |
+| **Get Page Labels** | `GET /pages/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-labels-get) |
+| **Get Space Labels** | `GET /spaces/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api--spaces-id-labels-get) |
+| **Get Space Content Labels** | `GET /spaces/{id}/content/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api--spaces-id-content-labels-get) |
+| **Get Page Labels** | `GET /pages/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-labels-get) |
 
 
 
@@ -190,7 +204,9 @@ This node uses a sophisticated build system:
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Fork the repository, make your changes, and submit a pull request. For new Confluence API endpoints, add them to `config/confluence-routes.json` and run `npm run dev` to generate operations.
+
+**Found a bug or have a feature request?** Open an issue with clear details and steps to reproduce.
 
 ### Adding New Routes
 
