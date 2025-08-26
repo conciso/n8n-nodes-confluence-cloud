@@ -130,7 +130,9 @@ This node uses a sophisticated build system:
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Fork the repository, make your changes, and submit a pull request. For new Confluence API endpoints, add them to `config/confluence-routes.json` and run `npm run dev` to generate operations.
+
+**Found a bug or have a feature request?** Open an issue with clear details and steps to reproduce.
 
 ### Adding New Routes
 
