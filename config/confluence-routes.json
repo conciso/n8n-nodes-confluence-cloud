@@ -181,6 +181,46 @@
         }
 
       ]
+    },
+    "attachment": {
+      "displayName": "Attachment",
+      "description": "Work with Confluence attachments",
+      "routes": [
+        {
+          "path": "/attachments",
+          "methods": ["get"]
+        },
+        {
+          "path": "/attachments/{id}",
+          "methods": ["get", "delete"]
+        },
+        {
+          "path": "/attachments/{id}/labels",
+          "methods": ["get"]
+        },
+        {
+          "path": "/labels/{id}/attachments",
+          "methods": ["get"]
+        },
+        {
+          "path": "/pages/{id}/attachments",
+          "methods": ["get"]
+        },
+        {
+          "path": "/blogposts/{id}/attachments",
+          "methods": ["get"]
+        },
+        {
+          "path": "/content/{id}/child/attachment",
+          "legacy": true,
+          "methods": ["post", "put"]
+        },
+        {
+          "path": "/content/{id}/child/attachment/{attachmentId}/download",
+          "legacy": true,
+          "methods": ["get"]
+        }
+      ]
     }
   }
 }

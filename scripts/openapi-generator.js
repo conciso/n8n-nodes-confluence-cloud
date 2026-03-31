@@ -98,6 +98,16 @@ export const ${resourceKey}Properties = ${JSON.stringify(properties, null, 2)};`
                     },
                 };
 
+                // Binary-Handling für Download-Endpoints
+                if (route.path.toLowerCase().includes('download') || 
+                    (operation.responses && operation.responses['200'] && 
+                     operation.responses['200'].content && 
+                     Object.keys(operation.responses['200'].content).some(ct => ct.includes('application/octet-stream') || ct.includes('application/pdf') || ct.includes('image/')))) {
+                    routingConfig.request.responseType = 'arraybuffer';
+                    routingConfig.request.encoding = 'arraybuffer';
+                    routingConfig.__isDownloadEndpoint = true;
+                }
+
                 // Pagination-Handling für List-Operations
                 if (this.needsPagination(operation, method, route.path)) {
                     routingConfig.output = {
@@ -258,19 +268,61 @@ export const mainProperties = [
             default: Object.keys(this.config.resources)[0],
         });
 
-        // Für jede Resource: Operations und Properties hinzufügen
+        // Für jede Resource: Operations und Properties hinzufügen, cleaning up markers
         Object.entries(this.config.resources).forEach(([resourceKey, resourceConfig]) => {
             const operations = this.generateOperations(resourceKey, resourceConfig);
             const properties = this.generateProperties(resourceKey, resourceConfig);
+            
+            // Injiziere postReceive Funktionen für Download-Endpoints
+            this.injectDownloadFunctions(operations.options);
             
             allProperties.push(operations);
             allProperties.push(...properties);
         });
 
         // Generiere kompletten Node-Code als JavaScript
+        let propertiesJson = JSON.stringify(allProperties, null, 8);
+        
+        // Ersetze postReceive Placeholders mit Funktionsreferenzen
+        propertiesJson = propertiesJson.replace(
+            /"__postReceive__handleBinaryDownload"/g, 
+            'handleBinaryDownload'
+        );
+
         const nodeCode = `"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfluenceCloud = void 0;
+
+// Helper-Funktion für Download-Endpoints (arraybuffer responses)
+async function handleBinaryDownload(items, responseData) {
+    let fileName = 'document';
+    
+    // Extrahiere Dateinamen aus content-disposition header
+    const contentDisposition = responseData?.headers?.['content-disposition'];
+    if (contentDisposition) {
+        // Versuche filename*=UTF-8''encoded zu finden (RFC 5987)
+        let match = /filename\\*=(?:UTF-8'')?([^;]+)/.exec(contentDisposition);
+        if (!match) {
+            // Fallback zu filename="name" oder filename=name
+            match = /filename="([^"]+)"|filename=([^;\\s]+)/.exec(contentDisposition);
+        }
+        if (match) {
+            const extractedName = match[1] || match[2];
+            if (extractedName) {
+                fileName = decodeURIComponent(extractedName.trim());
+            }
+        }
+    }
+    
+    const mimeType = responseData?.headers?.['content-type'] ?? 'application/octet-stream';
+    const newItem = {
+        json: {},
+        binary: {
+            data: await this.helpers.prepareBinaryData(responseData.body, fileName, mimeType),
+        },
+    };
+    return [newItem];
+}
 
 class ConfluenceCloud {
     constructor() {    
@@ -301,7 +353,7 @@ class ConfluenceCloud {
                     'Content-Type': 'application/json',
                 },
             },
-            properties: ${JSON.stringify(allProperties, null, 8)},
+            properties: ${propertiesJson},
         };
     }
 }
@@ -310,6 +362,19 @@ exports.ConfluenceCloud = ConfluenceCloud;`;
         // Schreibe direkt als JavaScript-Datei in dist/
         writeFileSync('./dist/nodes/ConfluenceCloud/ConfluenceCloud.node.js', nodeCode);
         console.log('✅ Complete node generated as JavaScript file');
+    }
+
+    injectDownloadFunctions(options) {
+        if (Array.isArray(options)) {
+            options.forEach((option) => {
+                if (option.routing && option.routing.__isDownloadEndpoint) {
+                    option.routing.output = {
+                        postReceive: ['__postReceive__handleBinaryDownload'],
+                    };
+                    delete option.routing.__isDownloadEndpoint;
+                }
+            });
+        }
     }
 
     extractPathParameters(path, operation, spec) {
