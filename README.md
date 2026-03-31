@@ -173,7 +173,7 @@ Create a **Confluence Cloud API** credential with:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/n8n-nodes-confluence-cloud.git
+git clone https://github.com/conciso/n8n-nodes-confluence-cloud.git
 cd n8n-nodes-confluence-cloud
 
 # Install dependencies
