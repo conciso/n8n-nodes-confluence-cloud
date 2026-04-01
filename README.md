@@ -135,13 +135,13 @@ The attachment upload functionality is currently not available.
 
 | Operation | Method | API Version | Documentation |
 |-----------|--------|-------------|---------------|
-| **Get Attachments** | `GET /attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--attachments-get) |
-| **Get Attachment By Id** | `GET /attachments/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--attachments-id-get) |
-| **Delete Attachment** | `DELETE /attachments/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--attachments-id-delete) |
-| **Get Attachment Labels** | `GET /attachments/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--attachments-id-labels-get) |
-| **Get Label Attachments** | `GET /labels/{id}/attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--labels-id-attachments-get) |
-| **Get Page Attachments** | `GET /pages/{id}/attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-attachments-get) |
-| **Get Blogpost Attachments** | `GET /blogposts/{id}/attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/intro/#api--blogposts-id-attachments-get) |
+| **Get Attachments** | `GET /attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-attachments-get) |
+| **Get Attachment By Id** | `GET /attachments/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-attachments-id-get) |
+| **Delete Attachment** | `DELETE /attachments/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-attachments-id-delete) |
+| **Get Attachment Labels** | `GET /attachments/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-label/#api-attachments-id-labels-get) |
+| **Get Label Attachments** | `GET /labels/{id}/attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-labels-id-attachments-get) |
+| **Get Page Attachments** | `GET /pages/{id}/attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-pages-id-attachments-get) |
+| **Get Blogpost Attachments** | `GET /blogposts/{id}/attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-blogposts-id-attachments-get) |
 | **Download Attatchment** | `GET /content/{id}/child/attachment/{attachmentId}/download` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/api-group-content/#api--content-id-child-attachment-attachmentId-download-get) |
 
 
