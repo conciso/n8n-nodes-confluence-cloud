@@ -634,16 +634,19 @@ exports.ConfluenceCloud = ConfluenceCloud;`;
         // GET-Requests die Listen zurückgeben brauchen Pagination
         if (method !== 'get') return false;
         
-        // Check for pagination parameters (both start AND limit must be present)
+        // Check for pagination parameters
+        // V2 API uses cursor-based pagination, V1 uses start/offset
         const hasStart = operation.parameters?.some(p => p.name === 'start');
         const hasLimit = operation.parameters?.some(p => p.name === 'limit');
-        const hasPaginationParams = hasStart && hasLimit;
+        const hasCursor = operation.parameters?.some(p => p.name === 'cursor');
+        const hasOffset = operation.parameters?.some(p => p.name === 'offset');
         
         // If pagination parameters exist, it's definitely a paginated endpoint
+        const hasPaginationParams = (hasStart && hasLimit) || (hasCursor && hasLimit) || (hasOffset && hasLimit);
         if (hasPaginationParams) return true;
         
         // Fallback: Legacy logic for operations without clear pagination parameters
-        const listPaths = ['/spaces', '/pages', '/content', '/labels'];
+        const listPaths = ['/spaces', '/pages', '/content', '/labels', '/attachments'];
         const isListPath = listPaths.some(listPath => 
             path === listPath || path.endsWith(listPath)
         );
