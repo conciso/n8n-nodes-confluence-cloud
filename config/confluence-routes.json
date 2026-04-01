@@ -209,16 +209,12 @@
         {
           "path": "/blogposts/{id}/attachments",
           "methods": ["get"]
-        },
-        {
-          "path": "/content/{id}/child/attachment",
-          "legacy": true,
-          "methods": ["post", "put"]
-        },
+        },        
         {
           "path": "/content/{id}/child/attachment/{attachmentId}/download",
           "legacy": true,
-          "methods": ["get"]
+          "methods": ["get"],
+          "isDownload": true
         }
       ]
     }

@@ -99,10 +99,7 @@ export const ${resourceKey}Properties = ${JSON.stringify(properties, null, 2)};`
                 };
 
                 // Binary-Handling für Download-Endpoints
-                if (route.path.toLowerCase().includes('download') || 
-                    (operation.responses && operation.responses['200'] && 
-                     operation.responses['200'].content && 
-                     Object.keys(operation.responses['200'].content).some(ct => ct.includes('application/octet-stream') || ct.includes('application/pdf') || ct.includes('image/')))) {
+                if (route.isDownload) {
                     routingConfig.request.responseType = 'arraybuffer';
                     routingConfig.request.encoding = 'arraybuffer';
                     routingConfig.__isDownloadEndpoint = true;
