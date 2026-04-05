@@ -129,6 +129,21 @@ Create a **Confluence Cloud API** credential with:
 | **Get Space Content Labels** | `GET /spaces/{id}/content/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-space/#api--spaces-id-content-labels-get) |
 | **Get Page Labels** | `GET /pages/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-page/#api--pages-id-labels-get) |
 
+### 📄 **Attachment Operations**
+
+The attachment upload functionality is currently not available.
+
+| Operation | Method | API Version | Documentation |
+|-----------|--------|-------------|---------------|
+| **Get Attachments** | `GET /attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-attachments-get) |
+| **Get Attachment By Id** | `GET /attachments/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-attachments-id-get) |
+| **Delete Attachment** | `DELETE /attachments/{id}` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-attachments-id-delete) |
+| **Get Attachment Labels** | `GET /attachments/{id}/labels` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-label/#api-attachments-id-labels-get) |
+| **Get Label Attachments** | `GET /labels/{id}/attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-labels-id-attachments-get) |
+| **Get Page Attachments** | `GET /pages/{id}/attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-pages-id-attachments-get) |
+| **Get Blogpost Attachments** | `GET /blogposts/{id}/attachments` | V2 | [📖 V2 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v2/api-group-attachment/#api-blogposts-id-attachments-get) |
+| **Download Attatchment** | `GET /content/{id}/child/attachment/{attachmentId}/download` | V1 (Legacy) | [📖 V1 API Docs](https://developer.atlassian.com/cloud/confluence/rest/v1/api-group-content/#api--content-id-child-attachment-attachmentId-download-get) |
+
 
 
 ## 💡 Usage Examples
